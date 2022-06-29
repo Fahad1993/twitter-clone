@@ -19,7 +19,7 @@ export default function NewTweet() {
           return
         }
 
-       await fetch('/api/tweet', {
+        const res = await fetch('/api/tweet', {
             body: JSON.stringify({
                 content,
             }),
@@ -28,8 +28,12 @@ export default function NewTweet() {
             },
             method: 'POST',
         })
-        router.reload(window.location.pathname)
+        const tweet = await res.json()
 
+        setTweets([tweet, ...tweets])
+				setContent('')
+        
+        // router.reload(window.location.pathname)
       }}
     >
       <div className='flex'>
@@ -40,6 +44,7 @@ export default function NewTweet() {
             cols={50}
             placeholder="What's happening?"
             name='content'
+            value={content}
             onChange={(e) => setContent(e.target.value)}
           />
         </div>
